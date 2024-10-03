@@ -1,7 +1,7 @@
 // Fetch crypto data and plot it on the chart
 const apiUrl = "https://api.coingecko.com/api/v3/coins/markets";
-const currency = "usd"; // currency to display prices in
-const cryptoIds = ["bitcoin", "ethereum", "litecoin"]; // Add more cryptocurrencies if needed
+const currency = "usd";
+const cryptoIds = ["bitcoin", "ethereum", "litecoin"];
 const params = new URLSearchParams({
     vs_currency: currency,
     ids: cryptoIds.join(",")
