@@ -65,6 +65,7 @@ body {
 
 .flex-container {
     display: flex;
+
 }
 
 h1 {
@@ -75,10 +76,26 @@ h1 {
 .bar {
     fill: steelblue;
 }
+
 .bar:hover {
     fill: orange;
 }
+
 .axis-label {
     font-size: 12px;
     font-family: Arial, sans-serif;
+}
+
+.header-container {
+    display: inline;
+}
+
+@media all and (max-width:800px)
+{
+    .header-container, .container
+    {
+        display: block; 
+        float: none; 
+        width: 100%;
+    }
 }
