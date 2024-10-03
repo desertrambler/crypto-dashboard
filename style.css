@@ -63,6 +63,10 @@ body {
     max-width: 800px;
 }
 
+.flex-container {
+    display: flex;
+}
+
 h1 {
     color: #333;
     margin-bottom: 20px;
