@@ -1,37 +1,40 @@
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+document.addEventListener('DOMContentLoaded', () => {
+    const cryptoContainer = document.getElementById('crypto-container');
 
-// Declare the chart dimensions and margins.
-const width = 640;
-const height = 400;
-const marginTop = 20;
-const marginRight = 20;
-const marginBottom = 30;
-const marginLeft = 40;
+    const getCryptoPrices = async () => {
+        try {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin&vs_currencies=usd');
+            const data = await response.json();
 
-// Declare the x (horizontal position) scale.
-const x = d3.scaleUtc()
-    .domain([new Date("2023-01-01"), new Date("2024-01-01")])
-    .range([marginLeft, width - marginRight]);
+            displayPrices(data);
+        } catch (error) {
+            console.error("Error fetching crypto prices:", error);
+        }
+    };
 
-// Declare the y (vertical position) scale.
-const y = d3.scaleLinear()
-    .domain([0, 100])
-    .range([height - marginBottom, marginTop]);
+    const displayPrices = (data) => {
+        const cryptos = [
+            { name: "Bitcoin", id: "bitcoin", price: data.bitcoin.usd },
+            { name: "Ethereum", id: "ethereum", price: data.ethereum.usd },
+            { name: "Dogecoin", id: "dogecoin", price: data.dogecoin.usd }
+        ];
 
-// Create the SVG container.
-const svg = d3.create("svg")
-    .attr("width", width)
-    .attr("height", height);
+        cryptoContainer.innerHTML = '';
 
-// Add the x-axis.
-svg.append("g")
-    .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(d3.axisBottom(x));
+        cryptos.forEach(crypto => {
+            const cryptoElement = document.createElement('div');
+            cryptoElement.classList.add('crypto');
+            cryptoElement.innerHTML = `
+                <h2>${crypto.name}</h2>
+                <p>$${crypto.price}</p>
+            `;
+            cryptoContainer.appendChild(cryptoElement);
+        });
+    };
 
-// Add the y-axis.
-svg.append("g")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y));
+    // Fetch prices every 10 seconds
+    setInterval(getCryptoPrices, 10000);
 
-// Append the SVG element.
-container.append(svg.node());
+    // Fetch prices on load
+    getCryptoPrices();
+});
